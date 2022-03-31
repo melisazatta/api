@@ -1,6 +1,7 @@
 const express = require("express")
 require("dotenv").config()
 const port = process.env.port || 3030
+require("./db/config")
 
 const server = express()
 server.use(express.json())
@@ -16,14 +17,9 @@ server.get("/", (req, res) => {
     res.send(content)
 });
 
-//get all users
+//Users router
 server.use("/users", require("./users/usersRoute"))
 
-//404
-server.use((req, res) => {
-    res.status(404).json({ message: "Resource not found"})   
-})
 
 
-
-//hasta clase 4 min 02:01 comienza con base de datos mysql
+//-------5--------

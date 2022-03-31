@@ -12,4 +12,9 @@ router.post("/", addUser)
 //delete user by id
 router.delete("/:id", deleteUser)
 
+//404
+router.use((req, res) => {
+    res.status(404).json({ message: "Resource not found"})   
+})
+
 module.exports = router
