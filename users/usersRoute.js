@@ -1,16 +1,20 @@
 const router = require("express").Router();
-const {getAllUsers, getUserById, addUser, deleteUser} = require("./usersController")
-// let users = require("../db/data")
-// const findById = require("../util/findById")
+const { listAll, listOne, addOne, removeOne, editOne} = require("./usersController")
 
 //get all users
-router.get("/", getAllUsers)
+router.get("/", listAll)
+
  //get user by id
- router.get("/:id", getUserById)
+ router.get("/:id", listOne)
+
 //post new users
-router.post("/", addUser)
+router.post("/", addOne)
+
+//edit user by id
+router.patch("/:id", editOne)
+
 //delete user by id
-router.delete("/:id", deleteUser)
+router.delete("/:id", removeOne)
 
 //404
 router.use((req, res) => {
