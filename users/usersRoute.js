@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { listAll, listOne, addOne, removeOne, editOne} = require("./usersController")
-
+const { validatorCreateUser } = require("../validators/users")
 //get all users
 router.get("/", listAll)
 
@@ -8,7 +8,7 @@ router.get("/", listAll)
  router.get("/:id", listOne)
 
 //post new users
-router.post("/", addOne)
+router.post("/", validatorCreateUser, addOne)
 
 //edit user by id
 router.patch("/:id", editOne)

@@ -38,4 +38,4 @@ server.use((error, req, res, nextTick)=>{
 })
 
 
-//-------5-------- minuto 01:40 pool connection
+//-------6-------- minuto 02:20
