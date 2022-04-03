@@ -1,4 +1,3 @@
-let users = require("../db/data")
 const { getAllUsers, getUserById, addNewUser, deleteUserById, editUserById } = require("./usersModel")
 const notNumber = require("../util/notNumber")
 

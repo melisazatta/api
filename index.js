@@ -1,6 +1,4 @@
 const express = require("express")
-const { stat } = require("fs")
-const { nextTick } = require("process")
 require("dotenv").config()
 const port = process.env.port || 3030
 require("./db/config")
@@ -30,7 +28,7 @@ server.use((req, res, next) =>{
 })
 
 //Error Handler
-server.use((error, req, res, nextTick)=>{
+server.use((error, req, res, next)=>{
     if (!error.status) {
         error.status = 500
     }
@@ -38,4 +36,8 @@ server.use((error, req, res, nextTick)=>{
 })
 
 
-//-------6-------- minuto 02:20
+//-------6-------- minuto 02:20 
+// {
+//     "status": 500,
+//     "message": "ER_DUP_ENTRY"
+// }
