@@ -13,6 +13,13 @@ const validatorCreateUser = [
     .trim()
     .isEmail().withMessage("Must be a valid email address")
     .normalizeEmail(), //sanitizer
+    // .custom(async email => {   //--------------check!!!!!
+    //     const value = await isEmailInUse(email);
+    //     if (value) {
+    //         throw new Error('Email is already exists!');
+    //     }
+    // })
+    // .withMessage('Invalid email address, already exists!'), //-----------
     check("password")
     .exists()
     .trim()

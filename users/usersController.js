@@ -1,5 +1,6 @@
 const { getAllUsers, getUserById, addNewUser, deleteUserById, editUserById } = require("./usersModel")
 const notNumber = require("../util/notNumber")
+const { hashPassword, checkPassword } = require("../util/handlePassword")
 
 //get all users
 const listAll = async(req, res, next) => {
@@ -16,8 +17,9 @@ const listAll = async(req, res, next) => {
 };
 //add new user
 const addOne = async(req, res, next) => {
-        const dbResponse = await addNewUser(req.body)
-        dbResponse instanceof Error ? next(dbResponse) : res.status(201).json(req.body)
+    const password = await hashPassword(req.body.password)
+        const dbResponse = await addNewUser({...req.body, password })
+        dbResponse instanceof Error ? next(dbResponse) : res.status(201).json({message: `User ${req.body.name} created`})
 }
 //delete user by id
 const removeOne = async(req, res, next) => {

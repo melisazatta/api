@@ -36,8 +36,7 @@ server.use((error, req, res, next)=>{
 })
 
 
-//-------6-------- minuto 02:20 
-// {
+//-------6--------
 //     "status": 500,
 //     "message": "ER_DUP_ENTRY"
-// }
+//
