@@ -1,4 +1,4 @@
-const { getAllUsers, getUserById, addNewUser, deleteUserById, editUserById } = require("./usersModel")
+const { getAllUsers, getUserById, registerNewUser, loginUser, deleteUserById, editUserById } = require("./usersModel")
 const notNumber = require("../util/notNumber")
 const { hashPassword, checkPassword } = require("../util/handlePassword")
 
@@ -15,12 +15,28 @@ const listAll = async(req, res, next) => {
     if (dbResponse instanceof Error) return next(dbResponse);
     dbResponse.length ? res.status(200).json(dbResponse) : next()
 };
-//add new user
-const addOne = async(req, res, next) => {
+//Register new user
+const register = async(req, res, next) => {
     const password = await hashPassword(req.body.password)
-        const dbResponse = await addNewUser({...req.body, password })
+        const dbResponse = await registerNewUser({...req.body, password })
         dbResponse instanceof Error ? next(dbResponse) : res.status(201).json({message: `User ${req.body.name} created`})
 }
+//Login
+const login = async (req, res, next) => {
+    const dbResponse = await loginUser(req.body.email);
+    if (!dbResponse.length) return next();
+    const passwordMatch = await checkPassword(req.body.password, dbResponse[0].password)
+    if (passwordMatch) {
+        res.status(200).json({ message: "Authorized"})
+    }
+    else {
+        let error = new Error;
+        error.message = "Unauthorized"
+        error.status = 401
+        next(error)
+    }
+}
+
 //delete user by id
 const removeOne = async(req, res, next) => {
     if (notNumber(+req.params.id, next)) return;
@@ -37,4 +53,4 @@ const editOne = async(req, res) => {
 
 }
 
-module.exports = {listAll, listOne, addOne, removeOne, editOne}
+module.exports = {listAll, listOne, register, login, removeOne, editOne}

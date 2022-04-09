@@ -20,11 +20,22 @@ const getUserById = async(id) => {
         return error
     }
 } 
-//add new user
-const addNewUser = async(user) => {
+//Register new user
+const registerNewUser = async(user) => {
     const query = `INSERT INTO users SET ?`
     try {        
         return await pool.query(query, user)        
+    } catch (error) {
+        error.message = error.code
+        return error
+    }
+}
+
+//Login user
+const loginUser = async(email) => {
+    const query = `SELECT * FROM users WHERE email= '${email}'`
+    try {        
+        return await pool.query(query)        
     } catch (error) {
         error.message = error.code
         return error
@@ -51,4 +62,4 @@ const editUserById = async(id, user) => {
     }
 }
 
-module.exports = { getAllUsers, getUserById, addNewUser, deleteUserById, editUserById }
+module.exports = { getAllUsers, getUserById, registerNewUser, loginUser, deleteUserById, editUserById }

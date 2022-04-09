@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { listAll, listOne, addOne, removeOne, editOne} = require("./usersController")
+const { listAll, listOne, register, login, removeOne, editOne} = require("./usersController")
 const { validatorCreateUser } = require("../validators/users")
 //get all users
 router.get("/", listAll)
@@ -7,8 +7,11 @@ router.get("/", listAll)
  //get user by id
  router.get("/:id", listOne)
 
-//post new users
-router.post("/", validatorCreateUser, addOne)
+//Register
+router.post("/register", validatorCreateUser, register)
+
+//Login
+router.post("/login", login)
 
 //edit user by id
 router.patch("/:id", editOne)
@@ -17,8 +20,8 @@ router.patch("/:id", editOne)
 router.delete("/:id", removeOne)
 
 //404
-router.use((req, res) => {
-    res.status(404).json({ message: "Resource not found"})   
-})
+// router.use((req, res) => {
+//     res.status(404).json({ message: "Resource not found"})   
+// })
 
 module.exports = router
