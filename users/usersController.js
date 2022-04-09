@@ -17,8 +17,9 @@ const listAll = async(req, res, next) => {
 };
 //Register new user
 const register = async(req, res, next) => {
+    const image = `${process.env.public_url}/${req.file.filename}`
     const password = await hashPassword(req.body.password)
-        const dbResponse = await registerNewUser({...req.body, password })
+        const dbResponse = await registerNewUser({...req.body, password, image })
         dbResponse instanceof Error ? next(dbResponse) : res.status(201).json({message: `User ${req.body.name} created`})
 }
 //Login
@@ -45,11 +46,12 @@ const removeOne = async(req, res, next) => {
     dbResponse.affectedRows ? res.status(204).end() : next() 
 }
 //Edit user by id
-const editOne = async(req, res) => {
+const editOne = async(req, res, next) => {
     if (notNumber(+req.params.id, next)) return;
-    const dbResponse = await editUserById(+req.params.id, req.body)
+    const image = `${process.env.public_url}/${req.file.filename}`
+    const dbResponse = await editUserById(+req.params.id, { ...req.body, image})
     if (dbResponse instanceof Error) return next(dbResponse);
-    dbResponse.affectedRows ? res.status(200).json(req.body) : next()
+    dbResponse.affectedRows ? res.status(200).json({message: `User ${req.body.name} updated`}) : next()
 
 }
 

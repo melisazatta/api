@@ -5,6 +5,7 @@ require("./db/config")
 
 const server = express()
 server.use(express.json())
+server.use(express.static("storage"))
 
 server.listen(port, (err) => {
     err? console.log(`Error: ${err}`) : console.log(`Servidor en http://localhost:${port}`)
@@ -36,7 +37,7 @@ server.use((error, req, res, next)=>{
 })
 
 
-//-------6--------
+//---------------
 //     "status": 500,
 //     "message": "ER_DUP_ENTRY"
-//
+// start 8--------------

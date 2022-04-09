@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { listAll, listOne, register, login, removeOne, editOne} = require("./usersController")
 const { validatorCreateUser } = require("../validators/users")
+const fileUpload = require ("../util/handlerStorage")
 //get all users
 router.get("/", listAll)
 
@@ -8,13 +9,13 @@ router.get("/", listAll)
  router.get("/:id", listOne)
 
 //Register
-router.post("/register", validatorCreateUser, register)
+router.post("/register", fileUpload.single("file"), validatorCreateUser, register)
 
 //Login
 router.post("/login", login)
 
-//edit user by id
-router.patch("/:id", editOne)
+//patch user by id
+router.patch("/:id", fileUpload.single("file"), editOne)
 
 //delete user by id
 router.delete("/:id", removeOne)
