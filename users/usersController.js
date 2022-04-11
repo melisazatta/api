@@ -1,6 +1,7 @@
 const { getAllUsers, getUserById, registerNewUser, loginUser, deleteUserById, editUserById } = require("./usersModel")
 const notNumber = require("../util/notNumber")
 const { hashPassword, checkPassword } = require("../util/handlePassword")
+const { tokenSign } = require("../util/handleJWT")
 
 //get all users
 const listAll = async(req, res, next) => {
@@ -19,8 +20,17 @@ const listAll = async(req, res, next) => {
 const register = async(req, res, next) => {
     const image = `${process.env.public_url}/${req.file.filename}`
     const password = await hashPassword(req.body.password)
-        const dbResponse = await registerNewUser({...req.body, password, image })
-        dbResponse instanceof Error ? next(dbResponse) : res.status(201).json({message: `User ${req.body.name} created`})
+    const dbResponse = await registerNewUser({...req.body, password, image })
+    if (dbResponse instanceof Error) return next(dbResponse)
+    
+    const user = {
+        name: req.body.name,
+    }
+    const tokenData = {
+    token: await tokenSign(user),
+    user: user
+    }
+    res.status(201).json({message: `User ${req.body.name} created`, JWT: tokenData})
 }
 //Login
 const login = async (req, res, next) => {
@@ -28,12 +38,23 @@ const login = async (req, res, next) => {
     if (!dbResponse.length) return next();
     const passwordMatch = await checkPassword(req.body.password, dbResponse[0].password)
     if (passwordMatch) {
-        res.status(200).json({ message: "Authorized"})
+        const user = {
+            id: dbResponse[0].id,
+            name: dbResponse[0].name,
+            email: dbResponse[0].email,
+            image: dbResponse[0].image
+        }
+        const tokenData = {
+            token: await tokenSign(user),
+            user: user
+            }
+        res.status(200).json({ message: `User ${user.name} authorized`, JWT: tokenData})
     }
     else {
-        let error = new Error;
-        error.message = "Unauthorized"
-        error.status = 401
+        const error = {
+        message: "Unauthorized",
+        status: 401
+        }
         next(error)
     }
 }

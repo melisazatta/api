@@ -21,6 +21,9 @@ server.get("/", (req, res) => {
 //Users router
 server.use("/users", require("./users/usersRoute"))
 
+//Posts router
+server.use("/posts", require("./posts/postsRoute"))
+
 //404
 server.use((req, res, next) =>{
     let error = new Error ( "Resource not found" );
@@ -37,7 +40,4 @@ server.use((error, req, res, next)=>{
 })
 
 
-//---------------
-//     "status": 500,
-//     "message": "ER_DUP_ENTRY"
-// start 8--------------
+// -------8 OK-------
