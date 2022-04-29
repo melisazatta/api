@@ -1,4 +1,5 @@
 const express = require("express")
+const cors = require("cors")
 require("dotenv").config()
 const port = process.env.port || 3030
 require("./db/config")
@@ -6,6 +7,7 @@ require("./db/config")
 const server = express()
 server.use(express.json())
 server.use(express.static("storage"))
+server.use(cors())
 
 server.listen(port, (err) => {
     err? console.log(`Error: ${err}`) : console.log(`Servidor en http://localhost:${port}`)
